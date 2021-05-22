@@ -12,9 +12,10 @@ import checkIcon from "../assets/icons/Check.png";
 
 interface TodoInputProps {
   addTask: (task: string) => void;
+  theme: string;
 }
 
-export function TodoInput({addTask}: TodoInputProps) {
+export function TodoInput({addTask, theme}: TodoInputProps) {
   const [task, setTask] = useState("");
 
   function handleAddNewTask() {
@@ -23,35 +24,45 @@ export function TodoInput({addTask}: TodoInputProps) {
   }
 
   return (
-    <View
-      style={[
-        styles.inputContainer,
-        Platform.OS === "ios"
-          ? styles.inputIOSShadow
-          : styles.inputAndroidShadow,
-      ]}
-    >
-      <TextInput
-        style={styles.input}
-        placeholder="Adicionar novo todo..."
-        returnKeyType="send"
-        onSubmitEditing={handleAddNewTask}
-        onChangeText={(text: string) => setTask(text)}
-        value={task}
-      />
-      <TouchableOpacity
-        testID="add-new-task-button"
-        activeOpacity={0.7}
-        style={styles.addButton}
-        onPress={() => handleAddNewTask()}
+    <View style={theme == "standard" ? styles.container : styles.containerDark}>
+      <View
+        style={[
+          theme == "standard"
+            ? styles.inputContainer
+            : styles.inputContainerDark,
+          Platform.OS === "ios"
+            ? styles.inputIOSShadow
+            : styles.inputAndroidShadow,
+        ]}
       >
-        <Image source={checkIcon} />
-      </TouchableOpacity>
+        <TextInput
+          style={theme == "standard" ? styles.input : styles.inputDark}
+          placeholder="Adicionar novo todo..."
+          returnKeyType="send"
+          onSubmitEditing={handleAddNewTask}
+          onChangeText={(text: string) => setTask(text)}
+          value={task}
+        />
+        <TouchableOpacity
+          testID="add-new-task-button"
+          activeOpacity={0.7}
+          style={theme == "standard" ? styles.addButton : styles.addButtonDark}
+          onPress={() => handleAddNewTask()}
+        >
+          <Image source={checkIcon} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#FFF",
+  },
+  containerDark: {
+    backgroundColor: "#3D3D4D",
+  },
   inputContainer: {
     backgroundColor: "#F5F4F8",
     borderRadius: 5,
@@ -68,6 +79,24 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
   },
+
+  inputContainerDark: {
+    backgroundColor: "#F5F4F8",
+    borderRadius: 5,
+    marginTop: -25,
+    marginHorizontal: 40,
+    height: 50,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  inputDark: {
+    flex: 1,
+    backgroundColor: "#34313D",
+    paddingLeft: 12,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+  },
+
   inputIOSShadow: {
     shadowColor: "#000",
     shadowOffset: {
@@ -82,6 +111,15 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: "#3FAD27",
+    height: 50,
+    paddingHorizontal: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+  },
+  addButtonDark: {
+    backgroundColor: "#988BC7",
     height: 50,
     paddingHorizontal: 16,
     justifyContent: "center",

@@ -13,9 +13,9 @@ interface Task {
 
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [themes, setThemes] = useState<String>("standard");
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task if it's not empty
     if (
       newTaskTitle.toString() == "" ||
       newTaskTitle == null ||
@@ -57,12 +57,18 @@ export function Home() {
     setTasks((oldTasks: Task[]) => filter);
   }
 
+  function changeTheme() {
+    const newTheme: string = themes == "standard" ? "dark" : "standard";
+    setThemes(newTheme);
+  }
+
   return (
     <>
-      <Header />
-      <TodoInput addTask={handleAddTask} />
+      <Header theme={themes} changeTheme={changeTheme} />
+      <TodoInput addTask={handleAddTask} theme={themes} />
 
       <MyTasksList
+        theme={themes}
         tasks={tasks}
         onPress={handleMarkTaskAsDone}
         onLongPress={handleRemoveTask}
